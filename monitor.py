@@ -17,17 +17,21 @@ def positive_int(value):
 	raise ValueError("interval must be greater than 0")
 
 def parse_args():
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--interval", type=positive_int, default=5)
-    return parser.parse_args()
+	parser = argparse.ArgumentParser()
+	parser.add_argument("--interval", type=positive_int, default=5)
+	parser.add_argument("--once", action="store_true")
+	return parser.parse_args()
 
 def main():
 	args = parse_args()
+	
 	try:
 		while True:
 			status = get_system_status()
-			os.system("clear")
+			os.system("cls" if os.name == "nt" else "clear")	
 			print_status(status)
+			if args.once :
+				return
 			time.sleep(args.interval)
 	except KeyboardInterrupt:
 		print("Stopping Server Monitor...")

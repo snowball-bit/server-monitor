@@ -1,7 +1,7 @@
 from server_monitor.system import get_system_status
 from monitor import get_status_label
 from monitor import positive_int
-
+from monitor import parse_args
 
 def test_sys_status():
 
@@ -44,3 +44,20 @@ def test_positive_int_invalid():
 
     with pytest.raises(ValueError):
         positive_int("-1")
+
+def test_parse_args_once(monkeypatch):
+    monkeypatch.setattr("sys.argv", ["monitor.py", "--once"])
+
+    args = parse_args()
+
+    assert args.once is True
+
+def test_parse_args_interval(monkeypatch):
+    monkeypatch.setattr(
+        "sys.argv",
+        ["monitor.py", "--interval", "2"]
+    )
+
+    args = parse_args()
+
+    assert args.interval == 2
